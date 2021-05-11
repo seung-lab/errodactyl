@@ -32,10 +32,10 @@ def l2skelgenerator(ptgenerator, rootid, datastackname, rootpt, *genargs,
     points = list()
     if "bp" in pointtypes:
         bps = l2skel.vertices[l2skel.branch_points] // voxelres
-        points.extend(map(tuple, bps))
+        points.extend(map(tuple, bps.astype(int)))
 
     if "ep" in pointtypes:
         eps = l2skel.vertices[l2skel.end_points] // voxelres
-        points.extend(map(tuple, eps))
+        points.extend(map(tuple, eps.astype(int)))
 
     return ptgenerator(points, *genargs, rootid=rootid, **genkwargs)

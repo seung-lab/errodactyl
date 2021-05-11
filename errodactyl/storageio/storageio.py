@@ -142,10 +142,31 @@ def writejson(content, path):
 @timed
 def writeinferencevols(towrite, storagestr, point):
     tag = utils.pointtag(point)
-    for (name, vol) in towrite.items():
-        outputfilename = os.path.join(storagestr, f"{tag}_{name}")
 
-        utils.writevol(vol, outputfilename)
+    bucket = None
+    # cloudfiles file dicts
+    filedicts = list()
+    for (name, vol) in towrite.items():
+        basename = f"{tag}_{name}"
+
+        if bucket is None:
+            outputfilename = os.path.join(storagestr, basename)
+            # calling this possibly adds "file://" prefix if req'd
+            bucket, _ = utils.splitpath(outputfilename)
+
+        filedicts.append({
+            "path": basename,
+            "content": vol.cpu().numpy().tobytes('F'),
+            "content_type": "application/octet-stream",
+            "compress": "gzip",
+            "compression_level": 4,
+            "cache_control": None,
+            "storage_class": None,
+        })
+
+    cf = cloudfiles.CloudFiles(bucket)
+
+    cf.puts(filedicts)
 
 
 @timed
