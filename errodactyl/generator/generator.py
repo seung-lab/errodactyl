@@ -2,7 +2,7 @@
 import inspect
 import functools
 
-from . import tasks
+from .. import tasks
 
 
 def ptgenerator(func):
