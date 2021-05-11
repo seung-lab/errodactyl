@@ -31,13 +31,3 @@ def inference(model, *inputdata):
     """A small wrapper around inference for timing"""
     with torch.no_grad():
         return model(*inputdata)
-
-
-def readpts(filename):
-    """Reads a point list file.
-
-    Points are assumed to be specified line-by-line in a way that
-    can be eval'd
-    """
-    with open(filename) as f:
-        return list(map(eval, f))

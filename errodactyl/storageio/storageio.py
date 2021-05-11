@@ -164,3 +164,14 @@ def write_ngl_annotations(annotations, path):
         content += ann.tongl() + "\n"
 
     writefile(content, path)
+
+
+@timed
+def readpts(filename):
+    """Reads a point list file.
+
+    Points are assumed to be specified line-by-line in a way that
+    can be eval'd
+    """
+    with open(filename) as f:
+        return list(map(eval, f))
